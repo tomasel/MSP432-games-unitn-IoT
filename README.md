@@ -6,6 +6,7 @@ Small series of retro games for the MSP432 with launchpad mkII
     - Snake
     - Minesweeper
     - Fallin'blocks (copyright free)
+    - Jumpy Pigeon (copyright free)
     - Retro Racers
     - Pacman
     - Breakout
