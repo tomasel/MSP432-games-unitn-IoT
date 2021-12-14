@@ -1,2 +1,12 @@
 # MSP432-games-unitn-IoT
-Series of small retro games for the MSP432 with launchpad mkII
+Small series of retro games for the MSP432 with launchpad mkII
+
+## (to be (maybe)) Implemented games
+    - Tetris
+    - Snake
+    - Minesweeper
+    - Fallin'blocks (copyright free)
+    - Retro Racers
+    - Pacman
+    - Breakout
+    - Frogger
