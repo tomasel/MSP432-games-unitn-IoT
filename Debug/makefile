@@ -13,6 +13,8 @@ ORDERED_OBJS += \
 "./main.obj" \
 "./system_msp432p401r.obj" \
 "./ccs/startup_msp432p401r_ccs.obj" \
+"./games/falling-blocks.obj" \
+"./games/retroracer.obj" \
 "./libraries/LcdDriver/Crystalfontz128x128_ST7735.obj" \
 "./libraries/LcdDriver/HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj" \
 "./libraries/graphic.obj" \
@@ -38,10 +40,12 @@ RMDIR := RMDIR /S/Q
 -include sources.mk
 -include subdir_vars.mk
 -include ccs/subdir_vars.mk
+-include games/subdir_vars.mk
 -include libraries/LcdDriver/subdir_vars.mk
 -include libraries/subdir_vars.mk
 -include subdir_rules.mk
 -include ccs/subdir_rules.mk
+-include games/subdir_rules.mk
 -include libraries/LcdDriver/subdir_rules.mk
 -include libraries/subdir_rules.mk
 -include objects.mk
@@ -174,8 +178,8 @@ MSP432GAMES.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "main.obj" "system_msp432p401r.obj" "ccs\startup_msp432p401r_ccs.obj" "libraries\LcdDriver\Crystalfontz128x128_ST7735.obj" "libraries\LcdDriver\HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj" "libraries\graphic.obj" "libraries\sound.obj" "libraries\util.obj" 
-	-$(RM) "main.d" "system_msp432p401r.d" "ccs\startup_msp432p401r_ccs.d" "libraries\LcdDriver\Crystalfontz128x128_ST7735.d" "libraries\LcdDriver\HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.d" "libraries\graphic.d" "libraries\sound.d" "libraries\util.d" 
+	-$(RM) "main.obj" "system_msp432p401r.obj" "ccs\startup_msp432p401r_ccs.obj" "games\falling-blocks.obj" "games\retroracer.obj" "libraries\LcdDriver\Crystalfontz128x128_ST7735.obj" "libraries\LcdDriver\HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.obj" "libraries\graphic.obj" "libraries\sound.obj" "libraries\util.obj" 
+	-$(RM) "main.d" "system_msp432p401r.d" "ccs\startup_msp432p401r_ccs.d" "games\falling-blocks.d" "games\retroracer.d" "libraries\LcdDriver\Crystalfontz128x128_ST7735.d" "libraries\LcdDriver\HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.d" "libraries\graphic.d" "libraries\sound.d" "libraries\util.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
