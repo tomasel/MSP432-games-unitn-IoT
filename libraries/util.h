@@ -14,6 +14,6 @@ void _hwInit();
 
 void wait(uint32_t ms);
 void schedule(uint32_t ms, void (*func)(void));
-void s_sprintf(char *str, const char *format, ... );
+void s_sprintf(int8_t *str, const char *format, ... );
 
 #endif 

@@ -28,42 +28,45 @@ void _hwInit(){
     _soundInit();
 }
 
-uint8_t s_intos (int32_t integer, char* string){
+//takes an integer, a string and a minimum length and appends the integer to the string
+//return value is the number of characters written
+uint8_t s_appendInteger (int32_t integer, char* string, int8_t length){
 
-    if(integer == 0) {
-        *string='0';
-        return 1;
-    }
     uint8_t l=0;
     if(integer < 0) {
         *string++='-';
         integer=-integer;
         l++;
     }
+
     char b[10];
-    int digit = integer;
+    uint32_t digit = integer;
     uint8_t i = 0;
-    while( digit > 0 ){         //store the digits reversed in a temp string
+    while( digit > 0 ){         //compute the digits and store them in a temp string
         b[i++] = digit % 10;
         digit /= 10;
     }
 
-    for (;i>0;i--) {
-        *string++ = '0' + b[i-1]; //reverse string
+    for (length -= i; length>0; length--){ //print enough spaces to fill
+        *string++=' ';
         l++;
     }
-    return l-1;
+
+    for ( ; i>0; i-- ) {
+        *string++ = '0' + b[i-1]; //reverse string and append to main string
+        l++;
+    }
+    return l;
 }
 
-void s_sprintf(char *str, const char *fs, ... ){
+//simple sprintf implementation to save memory
+void s_sprintf(int8_t *str, const char *fs, ... ){
     va_list valist;
     va_start(valist, fs);
     char *s;
     while(*fs){
         if(*fs != '%'){
             *str=*fs;   //copy string normally
-            str++;
-            fs++;
         } else {
             switch(*++fs) {
             case '%':
@@ -79,12 +82,17 @@ void s_sprintf(char *str, const char *fs, ... ){
                 }
                 break;
             case 'd':
-                str+=s_intos(va_arg(valist, int),str);
+                str += s_appendInteger(va_arg(valist, int), str, 0)-1; //subtract 1 because 1 will be added back
                 break;
+            default:
+                if ( *fs>'0' && *fs<='9' && fs[1] == 'd') { //for constant width example: %6d
+                    str += s_appendInteger(va_arg(valist, int), str, *fs-'0')-1;
+                    fs++; //increment format string because it's 2 characters long
+                }
             }
-            str++;
-            ++fs;
         }
+        str++;  //increment string to next character
+        fs++;   //increment format string
     }
     *str=NULL; //null terminate string
     va_end(valist);
