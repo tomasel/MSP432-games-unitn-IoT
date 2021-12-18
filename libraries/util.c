@@ -47,6 +47,10 @@ uint8_t s_appendInteger (int32_t integer, char* string, int8_t length){
         digit /= 10;
     }
 
+    if (integer == 0) {
+        b[i++] = 0;
+    }
+
     for (length -= i; length>0; length--){ //print enough spaces to fill
         *string++=' ';
         l++;
@@ -56,6 +60,7 @@ uint8_t s_appendInteger (int32_t integer, char* string, int8_t length){
         *string++ = '0' + b[i-1]; //reverse string and append to main string
         l++;
     }
+
     return l;
 }
 
