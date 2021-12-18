@@ -98,13 +98,12 @@ void Graphics_fillTriangle(const Graphics_Context *context, uint8_t x0, uint8_t 
         fillTopFlatTriangle(context, x0, y0, x1, y1, x2, y2);
         return;
       }
-      else  {
+
         /* general case - split the triangle in a topflat and bottom-flat one */
-          uint8_t x4;
-          x4 = (int)(x0 + ((float)(y1 - y0) / (float)(y2 - y0)) * (x2 - x1));
-        fillBottomFlatTriangle(context, x0, y0, x1, y1, x4, y1);
-        fillTopFlatTriangle(context, x1, y1, x4, y1, x2, y2);
-      }
+      uint8_t x4;
+      x4 = (int)(x0 + ((float)(y1 - y0) / (float)(y2 - y0)) * (x2 - x1));
+    fillBottomFlatTriangle(context, x0, y0, x1, y1, x4, y1);
+    fillTopFlatTriangle(context, x1, y1, x4, y1, x2, y2);
 }
 
 //test which is the fastest draw pixel
