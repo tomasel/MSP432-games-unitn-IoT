@@ -1,4 +1,5 @@
 #include "graphic.h"
+#include "stdio.h"
 
 #define GFX_BUFFER_SIZE 32
 static int8_t txt_buffer[GFX_BUFFER_SIZE];
@@ -20,21 +21,7 @@ void _graphicsInit(){
     Graphics_clearDisplay(&ctx);
 }
 
-void Graphics_drawStringf(const Graphics_Context *context, uint8_t x, uint8_t y, bool opaque, const char* format, ...) {
-    va_list args;
-    va_start(args, format);
-    vsnprintf((char*)txt_buffer, GFX_BUFFER_SIZE, format, args);
-    Graphics_drawString(context, txt_buffer, -1, x, y, opaque);
-    va_end(args);
-}
 
-void Graphics_drawStringfCentered(const Graphics_Context *context, uint8_t x, uint8_t y, bool opaque, const char* format, ...) {
-    va_list args;
-    va_start(args, format);
-    vsnprintf((char*)txt_buffer, GFX_BUFFER_SIZE, format, args);
-    Graphics_drawStringCentered(context, txt_buffer, -1, x, y, opaque);
-    va_end(args);
-}
 
 void Graphics_drawArc(const Graphics_Context *context, uint8_t x, uint8_t y, uint8_t radius, uint8_t start, uint8_t end){
 

@@ -60,6 +60,7 @@ libraries/util.obj: C:/ti/ccs1040/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/inclu
 libraries/util.obj: C:/ti/simplelink_msp432p4_sdk_3_40_01_02/source/ti/grlib/grlib.h
 libraries/util.obj: C:/ti/ccs1040/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stdio.h
 libraries/util.obj: C:/ti/ccs1040/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stdarg.h
+libraries/util.obj: C:/ti/ccs1040/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stdlib.h
 
 ../libraries/util.c:
 
@@ -180,4 +181,6 @@ C:/ti/simplelink_msp432p4_sdk_3_40_01_02/source/ti/grlib/grlib.h:
 C:/ti/ccs1040/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stdio.h:
 
 C:/ti/ccs1040/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stdarg.h:
+
+C:/ti/ccs1040/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stdlib.h:
 

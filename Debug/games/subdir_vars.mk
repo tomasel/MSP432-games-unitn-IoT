@@ -6,21 +6,27 @@ SHELL = cmd.exe
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Devices/MSPIO.c 
+../games/falling-blocks.c \
+../games/retroracer.c 
 
 C_DEPS += \
-./Devices/MSPIO.d 
+./games/falling-blocks.d \
+./games/retroracer.d 
 
 OBJS += \
-./Devices/MSPIO.obj 
+./games/falling-blocks.obj \
+./games/retroracer.obj 
 
 OBJS__QUOTED += \
-"Devices\MSPIO.obj" 
+"games\falling-blocks.obj" \
+"games\retroracer.obj" 
 
 C_DEPS__QUOTED += \
-"Devices\MSPIO.d" 
+"games\falling-blocks.d" \
+"games\retroracer.d" 
 
 C_SRCS__QUOTED += \
-"../Devices/MSPIO.c" 
+"../games/falling-blocks.c" \
+"../games/retroracer.c" 
 
 

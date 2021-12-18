@@ -1,5 +1,6 @@
 #include "util.h"
-
+#include <stdio.h>
+#include <stdlib.h>
 void _hwInit(){
     /* Halting WDT and disabling master interrupts */
     WDT_A_holdTimer();
@@ -25,4 +26,66 @@ void _hwInit(){
 
 
     _soundInit();
+}
+
+uint8_t s_intos (int32_t integer, char* string){
+
+    if(integer == 0) {
+        *string='0';
+        return 1;
+    }
+    uint8_t l=0;
+    if(integer < 0) {
+        *string++='-';
+        integer=-integer;
+        l++;
+    }
+    char b[10];
+    int digit = integer;
+    uint8_t i = 0;
+    while( digit > 0 ){         //store the digits reversed in a temp string
+        b[i++] = digit % 10;
+        digit /= 10;
+    }
+
+    for (;i>0;i--) {
+        *string++ = '0' + b[i-1]; //reverse string
+        l++;
+    }
+    return l-1;
+}
+
+void s_sprintf(char *str, const char *fs, ... ){
+    va_list valist;
+    va_start(valist, fs);
+    char *s;
+    while(*fs){
+        if(*fs != '%'){
+            *str=*fs;   //copy string normally
+            str++;
+            fs++;
+        } else {
+            switch(*++fs) {
+            case '%':
+                *str='%';
+                break;
+            case 'c':
+                *str=va_arg(valist, int32_t);   //add the character
+                break;
+            case 's':
+                s = va_arg(valist, char*);
+                while(*s){
+                    *str++=*s++;    //copy each character one after the other
+                }
+                break;
+            case 'd':
+                str+=s_intos(va_arg(valist, int),str);
+                break;
+            }
+            str++;
+            ++fs;
+        }
+    }
+    *str=NULL; //null terminate string
+    va_end(valist);
 }

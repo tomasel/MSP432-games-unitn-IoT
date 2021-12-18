@@ -58,6 +58,8 @@ libraries/graphic.obj: ../libraries/LcdDriver/HAL_MSP_EXP432P401R_Crystalfontz12
 libraries/graphic.obj: C:/ti/simplelink_msp432p4_sdk_3_40_01_02/source/ti/grlib/grlib.h
 libraries/graphic.obj: C:/ti/ccs1040/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/assert.h
 libraries/graphic.obj: C:/ti/simplelink_msp432p4_sdk_3_40_01_02/source/ti/grlib/grlib.h
+libraries/graphic.obj: ../libraries/util.h
+libraries/graphic.obj: C:/ti/simplelink_msp432p4_sdk_3_40_01_02/source/ti/grlib/grlib.h
 libraries/graphic.obj: C:/ti/ccs1040/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stdio.h
 libraries/graphic.obj: C:/ti/ccs1040/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stdarg.h
 
@@ -174,6 +176,10 @@ C:/ti/simplelink_msp432p4_sdk_3_40_01_02/source/ti/devices/msp432p4xx/driverlib/
 C:/ti/simplelink_msp432p4_sdk_3_40_01_02/source/ti/grlib/grlib.h:
 
 C:/ti/ccs1040/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/assert.h:
+
+C:/ti/simplelink_msp432p4_sdk_3_40_01_02/source/ti/grlib/grlib.h:
+
+../libraries/util.h:
 
 C:/ti/simplelink_msp432p4_sdk_3_40_01_02/source/ti/grlib/grlib.h:
 
