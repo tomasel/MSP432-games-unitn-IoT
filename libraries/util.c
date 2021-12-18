@@ -48,8 +48,8 @@ uint8_t s_intos (int32_t integer, char* string){
         digit /= 10;
     }
 
-    while(i) {
-        *string++ = '0' + b[i---1]; //reverse string
+    for (;i>0;i--) {
+        *string++ = '0' + b[i-1]; //reverse string
         l++;
     }
     return l-1;

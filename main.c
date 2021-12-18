@@ -18,7 +18,7 @@ void main(void)
     //playSong(3,nts);
 
     char string[32];
-    s_printf(string,"%d",-1024);
+    s_sprintf(string,"%d",-1024);
     Graphics_drawString(&ctx, string, -1, 10, 10, 1);
 
     while(1);
