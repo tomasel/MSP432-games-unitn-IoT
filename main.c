@@ -17,9 +17,11 @@ void main(void)
     };
     //playSong(3,nts);
 
-    char string[32];
-    s_sprintf(string,"%d",-1024);
-    Graphics_drawString(&ctx, string, -1, 10, 10, 1);
-
+    //int8_t string[32];
+    //s_sprintf(string,"test%dtest",1234);
+    //Graphics_drawString(&ctx, string, -1, 10, 10, 1);
+    Graphics_fillTriangle(&ctx, 10, 10, 40, 64, 100, 80);
+    Graphics_setForegroundColor(&ctx, 0);
+    Graphics_drawTriangle(&ctx, 10, 10, 40, 64, 100, 80);
     while(1);
 }
