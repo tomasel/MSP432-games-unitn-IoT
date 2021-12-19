@@ -79,5 +79,10 @@ uint16_t getButtons(){
     buttons |= GPIO_getInputPinValue(GPIO_PORT_P5,GPIO_PIN1)<<2; //button A;
     buttons |= GPIO_getInputPinValue(GPIO_PORT_P3,GPIO_PIN5)<<3; //button B;
     buttons |= GPIO_getInputPinValue(GPIO_PORT_P4,GPIO_PIN1)<<4; //button J;
+
+    buttons |= (joystick_y > JOYSTICK_CENTER + JOYSTICK_DEVIATION)<<5;
+    buttons |= (joystick_y > JOYSTICK_CENTER - JOYSTICK_DEVIATION)<<6;
+    buttons |= (joystick_x > JOYSTICK_CENTER + JOYSTICK_DEVIATION)<<7;
+    buttons |= (joystick_x > JOYSTICK_CENTER - JOYSTICK_DEVIATION)<<8;
     return ~buttons;
 }
