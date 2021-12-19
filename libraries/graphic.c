@@ -89,21 +89,21 @@ void Graphics_fillTriangle(const Graphics_Context *context, uint8_t x0, uint8_t 
         y2 = temp;
     }
 
-    if (y1 == y2) {
-        fillBottomFlatTriangle(context, x0, y0, x1, y1, x2, y2);
-        return;
-      }
-      /* check for trivial case of top-flat triangle */
-      if (y0 == y1){
-        fillTopFlatTriangle(context, x0, y0, x1, y1, x2, y2);
-        return;
-      }
+    //calculate line between top and bottom point
+    float mainSlope   = (float)(x2-x0)/(y2-y0);  //slope between top and bottom most points
+    float topSlope    = (float)(x1-x0)/(y1-y0);
+    float bottomSlope = (float)(x2-x1)/(y2-y1);
 
-        /* general case - split the triangle in a topflat and bottom-flat one */
-      uint8_t x4;
-      x4 = (int)(x0 + ((float)(y1 - y0) / (float)(y2 - y0)) * (x2 - x1));
-    fillBottomFlatTriangle(context, x0, y0, x1, y1, x4, y1);
-    fillTopFlatTriangle(context, x1, y1, x4, y1, x2, y2);
+    uint8_t i;
+    uint8_t x;
+    for (i=y0; i<y2; i++){ //for every y-level
+        if (i<y1){
+            x = topSlope*(i-y0)+x0;          //if we are above the middle point use the first
+        } else {
+            x = bottomSlope*(i-y1)+x1;
+        }
+        Graphics_drawLineH(context, mainSlope*(i-y0)+x0, x , i);
+    }
+
+
 }
-
-//test which is the fastest draw pixel
