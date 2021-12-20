@@ -33,10 +33,6 @@ void main(void) {
 
 
 
-
-a;
-
-
     while(1);
 }
 
