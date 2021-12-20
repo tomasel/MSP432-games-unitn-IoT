@@ -1,6 +1,7 @@
 #include "util.h"
 #include <stdio.h>
 #include <stdlib.h>
+
 void _hwInit(){
     /* Halting WDT and disabling master interrupts */
     WDT_A_holdTimer();
