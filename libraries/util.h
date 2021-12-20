@@ -6,7 +6,6 @@
 #include "LcdDriver/Crystalfontz128x128_ST7735.h"
 #include <ti/grlib/grlib.h>
 
-uint32_t ms;
 
 //uint32_t rand();
 
@@ -15,5 +14,5 @@ void _hwInit();
 void wait(uint32_t ms);
 void schedule(uint32_t ms, void (*func)(void));
 void s_sprintf(int8_t *str, const char *format, ... );
-
+uint32_t millis();
 #endif 

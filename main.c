@@ -42,6 +42,7 @@ void drawGameList (){
    Graphics_setForegroundColor(&ctx, GAMES_LIST_BACKGROUND);
    Graphics_fillRectangle(&ctx, &rect);
    Graphics_setForegroundColor(&ctx, FONT_COLOR);
+
    for (i=0; i<GAMES_LIST_LINES; i++){
        Graphics_drawString(&ctx, games[i].name, -1, 7, i*(CHAR_HEIGHT+GAMES_LIST_SPACING)+GAMES_LIST_SPACING, false);
    }
