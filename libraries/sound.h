@@ -19,9 +19,10 @@ void playNoise();
 
 
 void playNote(uint8_t noteNum); //accepts midi note numbers from 24 to 107
-
 typedef struct npd {uint8_t note; uint16_t duration;} npd;
 void playSong( uint32_t numNotes, npd* notes);
+void pause();
+void setVolume(uint8_t);
 
 #define STOP_NOTE 0
 

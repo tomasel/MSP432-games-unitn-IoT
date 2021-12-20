@@ -22,6 +22,8 @@ uint16_t getButtons();
 #define JOYSTICK_RIGHT 0b10000000
 #define JOYSTICK_LEFT  0b100000000
 
+void registerButtonInterrupt (void (*IRQ)(void),uint16_t BUTTON );
+
 void _inputInit();
 
 #endif 
