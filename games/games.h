@@ -11,10 +11,10 @@ struct games {
     void (*start)(void);    //function pointer to the start function
 
 } games[] = {//14 char per line       | <-- don't have words split by this bar
-     {"Tetris",         "The soviet    mind game", NULL},
-     {"Stack",          "Build a tower high", NULL},
-     {"Snake",          "The classic   nokia game", NULL},
-     {"Minesweeper",    "Mind the bomb squares!", NULL}
+     {"Tetris",         "The soviet    mind game   ", NULL},
+     {"Stack",          "Build a tower high        ", NULL},
+     {"Snake",          "The classic   nokia game  ", NULL},
+     {"Minesweeper",    "Mind the bomb squares!    ", NULL}
 };
 
 #endif

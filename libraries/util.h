@@ -11,8 +11,9 @@
 
 void _hwInit();
 
-void wait(uint32_t ms);
+
 void schedule(uint32_t ms, void (*func)(void));
 void s_sprintf(int8_t *str, const char *format, ... );
+void wait(uint32_t ms);
 uint32_t millis();
 #endif 

@@ -2,6 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+const Timer_A_ContinuousModeConfig continuousModeConfig = {
+        TIMER_A_CLOCKSOURCE_ACLK,           // ACLK Clock Source
+        TIMER_A_CLOCKSOURCE_DIVIDER_64,     // ACLK/64 = 1 kHz
+        TIMER_A_TAIE_INTERRUPT_ENABLE,      // Enable Overflow ISR
+        TIMER_A_DO_CLEAR                    // Clear Counter
+};
+
 void _hwInit(){
     /* Halting WDT and disabling master interrupts */
     WDT_A_holdTimer();
@@ -24,7 +31,12 @@ void _hwInit(){
     CS_setReferenceOscillatorFrequency(CS_REFO_128KHZ);
     CS_initClockSignal(CS_ACLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_2);
 
-
+    //setup clock for millis and sleep function
+    Timer_A_configureContinuousMode(TIMER_A2_BASE, &continuousModeConfig);
+    /* Enabling interrupts and going to sleep */
+    Interrupt_enableInterrupt(INT_TA2_N);
+    /* Starting the Timer_A2 in continuous mode */
+    Timer_A_startCounter(TIMER_A2_BASE, TIMER_A_CONTINUOUS_MODE);
 
     _soundInit();
 }
@@ -65,7 +77,7 @@ uint8_t s_appendInteger (int32_t integer, char* string, int8_t length){
     return l;
 }
 
-//simple sprintf implementation to save memory
+//simpler sprintf implementation, in order to save memory (this is like 1/10th the memory of real sprintf())
 void s_sprintf(int8_t *str, const char *fs, ... ){
     va_list valist;
     va_start(valist, fs);
@@ -102,4 +114,20 @@ void s_sprintf(int8_t *str, const char *fs, ... ){
     }
     *str=NULL; //null terminate string
     va_end(valist);
+}
+
+
+uint16_t millisHI = 0;
+uint32_t millis(){
+    return millisHI<<16|Timer_A_getCounterValue(TIMER_A2_BASE);
+}
+
+void TA2_N_IRQHandler(void){
+    Timer_A_clearInterruptFlag(TIMER_A2_BASE);
+    millisHI++;
+}
+
+void wait(uint32_t ms){
+    uint32_t start = millis();
+    while(start + ms < millis());
 }

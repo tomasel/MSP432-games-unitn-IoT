@@ -17,7 +17,7 @@
 
 #define DESC_CHAR_LINE 14
 
-uint8_t selection=1;
+int8_t selection=1;
 
 void drawGameList ();
 
@@ -29,11 +29,27 @@ void main(void) {
     Interrupt_enableMaster();
 
     drawGameList();
+    bool held = 0;
+    while(1){
+        uint16_t buttons = getButtons();
 
-
-
-
-    while(1);
+        if (buttons&(JOYSTICK_DOWN|JOYSTICK_UP)){
+            if(!held){
+                if (buttons&JOYSTICK_DOWN && selection<NUMGAMES-1) {
+                    selection ++;
+                } else if (buttons&JOYSTICK_UP && selection>0){
+                    selection --;
+                }
+                drawGameList();
+                held=true;
+            }
+        } else {
+            held=false;
+        }
+        if (buttons&(BUTTON_A|BUTTON_B)){
+            (*games[selection].start)();
+        }
+    }
 }
 
 void drawGameList (){
