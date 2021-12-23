@@ -9,8 +9,6 @@
 //#define T_FALLPREVIEW     //shows a preview of where the piece will fall
 
 ////////////////////////////////////GRAPHICS//////////////////////////////////
-#define FALLPREVIEW
-
 #define T_BACKGROUND GRAPHICS_COLOR_BLACK
 #define T_CLEARCOLOR GRAPHICS_COLOR_WHITE
 #define T_FONTCOLOR  GRAPHICS_COLOR_WHITE
@@ -28,7 +26,7 @@
 uint32_t t_colors[7]      = {0x01f1f2, 0xffd500, 0xa001f1, 0x02f102, 0xf00001, 0xef8201, 0x0100f1};
 
 
-const unsigned char t_leveldelay[20] = {32, 32, 29, 25, 22, 18, 15, 11, 7, 5, 4, 4, 4, 3, 3, 3, 2, 2, 2, 1};
+const uint8_t t_leveldelay[20] = {32, 32, 29, 25, 22, 18, 15, 11, 7, 5, 4, 4, 4, 3, 3, 3, 2, 2, 2, 1};
 #define T_ACTIONDELAY 256       //delay after a hard drop or after clearing a line
 #define T_LEVELUP t_lvl* t_lvl * 3  //number of lines you need to clear to level up (can be any formula)
 
@@ -53,7 +51,7 @@ static const uint16_t             // 0b 00011011 01010101  0b 00-01-10-11 (x off
         {0b1000011001101010, 0b0101011001101111, 0b0001100010101011, 0b0001010101011011},   //L
         {0b0000011001101010, 0b0101011001101101, 0b0001101010101011, 0b0001010111011011}};  //J
 
-#ifdef WALLKICK
+#ifdef T_WALLKICK
 static const struct Coords {
     int8_t x, y;
 } SRS[2][4][2][4] = {  //srs +[line][4 rotations][2 directions][4 checks]
@@ -85,6 +83,7 @@ uint32_t t_fallCounter = 0;  //used for gravity
 
 bool t_move(int8_t dx,int8_t dy, int8_t dr);
 void t_drawPiece(uint8_t pid, uint8_t rot, int8_t x, int8_t y, uint32_t color);
+void t_drawScore();
 void t_draw();
 void t_clearRows();
 void t_randompiece();
@@ -95,7 +94,7 @@ void t_place();
 
 
 void Tetris (void) {
-    unsigned char i;
+    uint8_t i;
        for (;;) {
            bgi = 0;
            t_totlines = 0;
@@ -125,12 +124,12 @@ void Tetris (void) {
        }
 }
 
-bool t_move(signed char dx,signed char dy, signed char dr){
-    signed char i, x, y, nx, ny, nr;
+bool t_move(int8_t dx, int8_t dy, int8_t dr){
+    int8_t i, x, y, nx, ny, nr;
     nx = t_currX + dx;
     ny = t_currY + dy;
     nr = (t_rot + dr < 0) ? 3 : (t_rot + dr) % 4;
-    short unsigned int p = t_tetrominos[t_piece][nr];
+    uint16_t p = t_tetrominos[t_piece][nr];
     for (i = 0; i < 4; i++) {
         x = hnget(p, i + 4) + nx;
         y = hnget(p, i) + ny;
@@ -144,7 +143,7 @@ bool t_move(signed char dx,signed char dy, signed char dr){
 }
 
 void t_clearRows(void) {
-    char full, cont = 0;
+    int8_t full, cont = 0;
     uint16_t i;
     for (i = 0; i < T_YM; i++) {  //check each row
         full = 1;
@@ -183,8 +182,8 @@ void t_clearRows(void) {
 
 
 void t_place() {
-    unsigned char i;
-    short unsigned int p = t_tetrominos[t_piece][t_rot];
+    uint8_t i;
+    uint16_t p = t_tetrominos[t_piece][t_rot];
     for (i = 0; i < 4; i++)
         grid[hnget(p, i) + t_currY][hnget(p, i + 4) + t_currX] = t_piece+1;
     t_drawPiece(t_piece, t_rot, t_currX, t_currY, t_colors[t_piece]);
@@ -197,15 +196,15 @@ void t_place() {
     }
 }
 
-char t_rotate(signed char _dir) {
+bool t_rotate(int8_t _dir) {
     if (t_move(0, 0, _dir))
         return 1;
-#ifdef WALLKICK
-    char i;
-    Coords t;
+#ifdef T_WALLKICK
+    int8_t i;
+    struct Coords t;
     for (i = 0; i < 4; i++) {
-        t = SRS[!piece][rot][!(_dir + 1)][i];
-        if (move(t.x, t.y, _dir))
+        t = SRS[!t_piece][t_rot][!(_dir + 1)][i];
+        if (t_move(t.x, t.y, _dir))
             return 1;
     }
 #endif
@@ -242,13 +241,14 @@ void t_keys(void){
     if      (bts&JOYSTICK_RIGHT) dir = 1;
     else if (bts&JOYSTICK_LEFT) dir = -1;
     if (dir) {
-        static int presstime = 0;
+        static uint32_t presstime = 0;
         if (!(t_flags & REPSIDE) || millis() - presstime > T_SHIFTDELAY) {  //delayed autoshift delay
-            static int t = 0;
+            static uint32_t t = 0;
             if (millis() - t > T_SHIFTSPEED) {  //autoshift
                 t_drawPiece(t_piece, t_rot, t_currX, t_currY, T_BACKGROUND);
                 t_move(dir, 0, 0);
                 t_drawPiece(t_piece, t_rot, t_currX, t_currY, t_colors[t_piece]);
+                t=millis();
             }
         }
         if (!(t_flags & REPSIDE)) {
@@ -260,12 +260,13 @@ void t_keys(void){
 
     //drop
     if (bts&JOYSTICK_DOWN) {
-        static int t = 0;
+        static uint32_t t = 0;
         if (millis() - t > T_SHIFTSPEED) {
             t_drawPiece(t_piece, t_rot, t_currX, t_currY, T_BACKGROUND);
             if (t_move(0, 1, 0)) {
                 t_score += t_lvl;
                 t_fallCounter = millis();
+                t_drawScore();
             }
             t_drawPiece(t_piece, t_rot, t_currX, t_currY, t_colors[t_piece]);
             t = millis();
@@ -282,6 +283,7 @@ void t_keys(void){
             wait(T_ACTIONDELAY);
             t_flags |= REPDROP;
             t_drawPiece(t_piece, t_rot, t_currX, t_currY, t_colors[t_piece]);
+            t_drawScore();
         }
 
 
@@ -316,28 +318,21 @@ void t_drawPiece(uint8_t pid, uint8_t rot, int8_t x, int8_t y, uint32_t color){
     #endif
 }
 
-void t_drawscore(){
-
-    Graphics_Rectangle rect = {.xMin=T_XM*(T_BLOCKW+1), .xMax= 128, .yMin=T_BLOCKW*9+2, .yMax=T_BLOCKW*9+2+T_BLOCKW};
-    Graphics_setForegroundColor(&ctx, T_BACKGROUND);
-
-    Graphics_fillRectangle(&ctx, &rect);
-
+void t_drawScore(){
     s_sprintf(t_buffer,"%7d",t_score);
     Graphics_setForegroundColor(&ctx, T_FONTCOLOR);
-    Graphics_drawString(&ctx, t_buffer,T_TXTMAX, T_XM*(T_BLOCKW+1),T_BLOCKW*9+2, false);
+    Graphics_drawString(&ctx, t_buffer,T_TXTMAX, T_XM*(T_BLOCKW+1),T_BLOCKW*9+2, true);
 }
 
 void t_draw() {
     Graphics_setBackgroundColor(&ctx, T_BACKGROUND);
     Graphics_clearDisplay(&ctx);
 
-
     Graphics_Rectangle rect = {.xMin=T_SCRXOFFSET-1, .xMax= T_SCRXOFFSET+T_BLOCKW*T_XM, .yMin=T_SCRYOFFSET-1, .yMax=T_SCRYOFFSET+T_BLOCKW*T_YM};
     Graphics_setForegroundColor(&ctx, T_BORDERCOLOR);
     Graphics_drawRectangle(&ctx, &rect);
 
-    unsigned char i, j, y;
+    uint8_t i, j, y;
     rect.xMin=T_SCRXOFFSET;
     rect.xMax=T_SCRXOFFSET+T_BLOCKW-1;
     rect.yMin=T_SCRYOFFSET;
@@ -381,7 +376,7 @@ void t_draw() {
     Graphics_drawString(&ctx, t_buffer,T_TXTMAX, T_XM*(T_BLOCKW+1),T_BLOCKW*6+2, false);
 
     Graphics_drawString(&ctx, "Score:", 6, T_XM*(T_BLOCKW+1),T_BLOCKW*8, false);
-    t_drawscore();
+    t_drawScore();
 
     s_sprintf(t_buffer,"Lvl:%2d",t_lvl);
     Graphics_drawString(&ctx, t_buffer,T_TXTMAX, T_XM*(T_BLOCKW+1),T_BLOCKW*11, false);
@@ -395,7 +390,7 @@ void t_randompiece() {
     t_currY = T_OFFY;
 
     if (bgi == 0) {  //Generate bag for next batch
-        char i;
+        uint8_t i;
         for (bgi = 0; bgi < 7; bgi++) {
         randnew:
             t_bag[bgi] = rand() % 7;

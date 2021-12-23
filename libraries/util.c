@@ -117,9 +117,9 @@ void s_sprintf(int8_t *str, const char *fs, ... ){
 }
 
 
-uint16_t millisHI = 0;
+uint16_t millisHI = 0; //high 16 bits of millisecond counter
 uint32_t millis(){
-    return millisHI<<16|Timer_A_getCounterValue(TIMER_A2_BASE);
+    return millisHI<<16|Timer_A_getCounterValue(TIMER_A2_BASE);//add the high bits to make a full 32 bit
 }
 
 void TA2_N_IRQHandler(void){
@@ -129,5 +129,5 @@ void TA2_N_IRQHandler(void){
 
 void wait(uint32_t ms){
     uint32_t start = millis();
-    while(start + ms < millis());
+    while(start + ms > millis());
 }
