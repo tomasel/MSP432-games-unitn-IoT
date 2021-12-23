@@ -15,9 +15,9 @@
 #define FONT_COLOR                          0x404040
 #define FONT_COLOR_SELECTED                 GRAPHICS_COLOR_WHITE
 
-#define DESC_CHAR_LINE 14
+#define DESC_CHAR_LINE 13
 
-int8_t selection=1;
+int8_t selection=0;
 
 void drawGameList ();
 
@@ -59,7 +59,7 @@ void drawGameList (){
    Graphics_fillRectangle(&ctx, &rect);
    Graphics_setForegroundColor(&ctx, FONT_COLOR);
 
-   for (i=0; i<GAMES_LIST_LINES; i++){
+   for (i=0; i<NUMGAMES; i++){
        Graphics_drawString(&ctx, games[i].name, -1, 7, i*(CHAR_HEIGHT+GAMES_LIST_SPACING)+GAMES_LIST_SPACING, false);
    }
 
@@ -73,7 +73,8 @@ void drawGameList (){
    Graphics_drawString(&ctx, games[selection].name, -1, 7, selection*(CHAR_HEIGHT+GAMES_LIST_SPACING)+GAMES_LIST_SPACING, false);
 
    Graphics_setForegroundColor(&ctx, 0);
-   Graphics_drawString(&ctx, games[selection].desc, DESC_CHAR_LINE, 3, 93, true);
-   Graphics_drawString(&ctx, games[selection].desc+DESC_CHAR_LINE, DESC_CHAR_LINE, 3, 93+CHAR_HEIGHT+GAMES_LIST_SPACING, true);
+   Graphics_drawString(&ctx, games[selection].desc, DESC_CHAR_LINE, 3, 85, true);
+   Graphics_drawString(&ctx, games[selection].desc+DESC_CHAR_LINE, DESC_CHAR_LINE, 3, 85+CHAR_HEIGHT+GAMES_LIST_SPACING, true);
+   Graphics_drawString(&ctx, games[selection].desc+DESC_CHAR_LINE*2, DESC_CHAR_LINE, 3, 85+2*(CHAR_HEIGHT+GAMES_LIST_SPACING), true);
 
 }

@@ -6,7 +6,6 @@
 #include "LcdDriver/Crystalfontz128x128_ST7735.h"
 #include <ti/grlib/grlib.h>
 
-
 //uint32_t rand();
 
 void _hwInit();
