@@ -43,7 +43,7 @@ void _hwInit(){
 
 //takes an integer, a string and a minimum length and appends the integer to the string
 //return value is the number of characters written
-uint8_t s_appendInteger (int32_t integer, char* string, int8_t length){
+uint8_t s_appendInteger (int32_t integer, int8_t *string, int8_t length){
 
     uint8_t l=0;
     if(integer < 0) {
