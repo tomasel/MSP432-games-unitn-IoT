@@ -9,7 +9,7 @@
 #define N_PLAYFIELDY  (128-(N_YM*N_SIZE)-15)
 
 #define N_STARTLEN  5
-#define N_SPEED     300
+#define N_SPEED     220
 
 #define N_FOREGROUND 0x000000
 #define N_BACKGROUND 0xB2BD08
@@ -25,8 +25,6 @@
  *
  * 3 lsb: direction
  * bit 3: isFat
- * bit 4: isCorner
- * 0b000 0 0 000
  */
 
 typedef struct n_coord {
@@ -58,18 +56,21 @@ void Snake(void){
         n_score=0;
         n_gameover=0;
         n_dir=2;
+        n_ndir=2;
         n_update();
 
         Graphics_clearDisplay(&ctx);
         Graphics_drawRectangle(&ctx, &rect); //draw border
         n_drawScore();
 
-        n_head.x=N_XM/2;     n_head.y=N_YM/2; //reset snake position
-        n_tail.x=n_head.x-N_STARTLEN;  n_tail.y=N_YM/2;
+        n_head.x=N_STARTLEN;  n_head.y=N_YM/2; //reset snake position
+        n_tail.x=0;           n_tail.y=N_YM/2;
 
         memset(n_field, 0, N_YM*N_XM);      //clear board
         memset(&(n_field[n_tail.y][n_tail.x]), 2, N_STARTLEN); //fill with snake
-
+        int8_t i;
+        for (i=0; i<N_STARTLEN; i++)
+            n_update();
         n_placefood();
 
         uint32_t time = millis();
@@ -82,11 +83,12 @@ void Snake(void){
                 time = t;
             }
         }
+        wait (1000);
     }
 }
 
 static void n_drawSegment(n_coord c, uint8_t texture){
-    if (texture == 255){
+    if (texture > 15){ //clear if not valid
         Graphics_Rectangle rect = { N_PLAYFIELDX+c.x*N_SIZE, N_PLAYFIELDY+c.y*N_SIZE, N_SIZE+N_PLAYFIELDX+(c.x*N_SIZE), N_SIZE+N_PLAYFIELDY+(c.y*N_SIZE) };
         Graphics_setForegroundColor(&ctx,N_BACKGROUND);
         Graphics_fillRectangle(&ctx, &rect); //clear the square
@@ -113,20 +115,19 @@ static void n_update(){
         n_drawSegment(n_tail, 255);            //clear current tail on display
         n_updateCoords(&n_tail, *taildir);               //move tail
         *taildir=0;                                      //clear old tail
-        n_drawSegment(n_tail, 9+n_field[n_tail.y][n_tail.x]); //draw new tail
+        n_drawSegment(n_tail, 9+(n_field[n_tail.y][n_tail.x]&0b111)); //draw new tail
     }
 
 
 
     static uint8_t prev_dir = 2;
-    uint8_t t = n_field[n_head.y][n_head.x];        //store before overwirting head
+    uint8_t eating = n_field[n_head.y][n_head.x];        //store before overwirting head
     n_field[n_head.y][n_head.x] = n_dir;            //set current direction
 
-    if (t != 0){
-        if (t==255){
+    if (eating != 0){
+        if (eating==255){
             n_field[n_head.y][n_head.x] |= N_ISFAT; //set fat propriety to tell snake to get longer
             n_score++;
-            n_placefood(); //i know this can bug plz fix later
             n_drawScore();
         } else {
             n_gameover = 1;
@@ -134,9 +135,8 @@ static void n_update(){
         }
     }
 
-    t = n_field[n_head.y][n_head.x]; //store current direction
     uint8_t texture;
-    if (t&N_ISFAT){
+    if (n_field[n_head.y][n_head.x]&N_ISFAT){
         texture = 14; //fat texture
     } else {
         switch (n_dir){               //selects the right corner or straight texture
@@ -191,7 +191,8 @@ static void n_update(){
     n_updateCoords(&n_head, n_dir);
     n_drawSegment(n_head, 5+n_dir); //draw head texture
 
-    prev_dir=n_dir;
+    prev_dir=n_dir; //previous direction
+    if(eating==255) n_placefood();
 }
 
 static void n_placefood(){

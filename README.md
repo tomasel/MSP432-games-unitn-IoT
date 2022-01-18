@@ -8,12 +8,15 @@ Small series of retro games for the MSP432 with launchpad mkII
    4. font
 
 ## (to be (maybe)) Implemented games
-   - t_Tetris                            almost done Guss
-   - n_Snake                             TBD         Guss
-   - m_Minesweeper                       TBD         Guss
-   - s_Stack                             TBD         Elia
-   - e_2048                              TBD         Elia
-   - f_Frogger                           TBD         Elia
-   - b_Breakout                          ?
-   - r_Retro Racers                      ?
-   - p_Pacman                            ?
+| Prefix | Game            |   Status   |Coder|
+|--|-----------------------|------------|-----|
+|t_|Tetris                 |almost done | Guss
+|n_|Snake                  |almost done | Guss
+|m_|Minesweeper            |TBD         | Guss
+|s_|Stack                  |TBD         | Elia
+|e_|2048                   |TBD         | Elia
+|f_|Frogger                |TBD         | Elia
+|b_|Breakout               |?           | ?
+|r_|Retro Racers           |?           | ?
+|p_|Pacman                 |?           | ?
+|c_|Montecarlo             |?           | ?

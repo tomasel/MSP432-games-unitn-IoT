@@ -117,9 +117,15 @@ void s_sprintf(int8_t *str, const char *fs, ... ){
 }
 
 
-uint16_t millisHI = 0; //high 16 bits of millisecond counter
-uint32_t millis(){
-    return millisHI<<16|Timer_A_getCounterValue(TIMER_A2_BASE);//add the high bits to make a full 32 bit
+uint16_t millisHI = 0;                      //high 16 bits of millisecond counter
+uint32_t millis(){                          //concurrency problem and freezes every once in a while
+    uint16_t _millisHI, _millisLO;
+    do {
+        _millisHI = millisHI;
+        _millisLO = Timer_A_getCounterValue(TIMER_A2_BASE);
+    } while (_millisHI != millisHI);             //if timer overflow is triggered after the values are stored, reupdate everything
+                                                 //this should prevent cases where the counter is behind by 2^16 
+    return _millisHI<<16|_millisLO;                  //add the high bits to make a full 32 bit
 }
 
 void TA2_N_IRQHandler(void){
