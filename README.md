@@ -16,6 +16,7 @@ Small series of retro games for the MSP432 with launchpad mkII
 |s_|Stack                  |TBD         | Elia
 |e_|2048                   |TBD         | Elia
 |f_|Frogger                |TBD         | Elia
+|w_|Worlde                 |TBD         | Elia
 |b_|Breakout               |?           | ?
 |r_|Retro Racers           |?           | ?
 |p_|Pacman                 |?           | ?
