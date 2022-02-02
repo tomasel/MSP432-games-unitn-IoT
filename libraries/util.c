@@ -47,9 +47,9 @@ uint8_t s_appendInteger (int32_t integer, int8_t *string, int8_t length){
 
     uint8_t l=0;
     if(integer < 0) {
-        *string++='-';
+        *string++='-'; //add minus sign if negative and invert sign
         integer=-integer;
-        l++;
+        l++; //increase character count
     }
 
     char b[10];
@@ -60,7 +60,7 @@ uint8_t s_appendInteger (int32_t integer, int8_t *string, int8_t length){
         digit /= 10;
     }
 
-    if (integer == 0) {
+    if (integer == 0) {     //if the number is zero add a zero
         b[i++] = 0;
     }
 
@@ -95,15 +95,15 @@ void s_sprintf(int8_t *str, const char *fs, ... ){
                 break;
             case 's':
                 s = va_arg(valist, char*);
-                while(*s){
-                    *str++=*s++;    //copy each character one after the other
+                while(*s){  //until we find NULL on the current string
+                    *str++=*s++;    //copy each character on the result
                 }
                 break;
             case 'd':
                 str += s_appendInteger(va_arg(valist, int), str, 0)-1; //subtract 1 because 1 will be added back
                 break;
             default:
-                if ( *fs>'0' && *fs<='9' && fs[1] == 'd') { //for constant width example: %6d
+                if ( *fs>'0' && *fs<='9' && fs[1] == 'd') { //for constant width integer, like for example: %6d
                     str += s_appendInteger(va_arg(valist, int), str, *fs-'0')-1;
                     fs++; //increment format string because it's 2 characters long
                 }

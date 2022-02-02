@@ -1,12 +1,15 @@
 #include "libraries/init.h"
 #include <string.h>
 
-#define N_XM 28
+#define N_XM 29
 #define N_YM 17
 #define N_SIZE 4 //size of snake segments
 
+#define N_SCORE_X  91
+#define N_SCORE_Y  33
+
 #define N_PLAYFIELDX  ((128-N_XM*N_SIZE)/2)
-#define N_PLAYFIELDY  (128-(N_YM*N_SIZE)-15)
+#define N_PLAYFIELDY  54
 
 #define N_STARTLEN  5
 #define N_SPEED     220
@@ -61,6 +64,7 @@ void Snake(void){
 
         Graphics_clearDisplay(&ctx);
         Graphics_drawRectangle(&ctx, &rect); //draw border
+        Graphics_drawImage(&ctx, &snake_background, 0, 2); //draw background image
         n_drawScore();
 
         n_head.x=N_STARTLEN;  n_head.y=N_YM/2; //reset snake position
@@ -103,7 +107,7 @@ static void n_drawSegment(n_coord c, uint8_t texture){
 static void n_drawScore(){
     int8_t buffer[10];
     s_sprintf(buffer, "%5d",n_score);
-    Graphics_drawString(&ctx, buffer, 10, 1, N_PLAYFIELDY-10, true);
+    Graphics_drawString(&ctx, buffer, 10, N_SCORE_X, N_SCORE_Y, true);
 }
 
 static void n_update(){
