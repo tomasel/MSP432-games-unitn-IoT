@@ -300,6 +300,28 @@ static void Crystalfontz128x128_PixelDrawMultiple(const Graphics_Display *pDispl
             break;
         }
 
+        // The pixel data is in 2 bit per pixel format
+        case 2:
+        {
+            // Loop while there are more pixels to draw
+            while(lCount > 0)
+            {
+                // Loop through the pixels in this byte of image data
+                for(; (lX0 < 4) && lCount; lX0++, lCount--)
+                {
+                    // Draw this pixel in the appropriate color
+                    HAL_LCD_writeData((((uint32_t *)pucPalette)[(Data >>
+                                                             (2*(3 - lX0))) & 0b11])>>8);
+                    HAL_LCD_writeData(((uint32_t *)pucPalette)[(Data >>
+                                                             (2*(3 - lX0))) & 0b11]);
+                }
+
+                // Start at the beginning of the next byte of image data
+                lX0 = 0;
+            }
+        }
+        // The image data has been drawn.
+        break;
         // The pixel data is in 4 bit per pixel format
         case 4:
         {

@@ -91,7 +91,7 @@ const Graphics_Image  m_icon_bmp = {
     IMAGE_FMT_2BPP_UNCOMP,
     7,
     7,
-    2,
+    4,
     m_4_pallette,
     m_gfx_pixels[1],
 };
