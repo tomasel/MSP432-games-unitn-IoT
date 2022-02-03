@@ -1,6 +1,5 @@
 #include "libraries/init.h"
 #include "assets/e_2048.h"
-#include "assets/minesweeper_assets.h"
 
 // colors
 #define E_BACK 0xBBADA0
@@ -30,12 +29,11 @@ void e_drawScore (void);
 
 // main
 void e_2048 () {
-    //Graphics_setBackgroundColor(&ctx,E_BACK);
+    Graphics_setBackgroundColor(&ctx,E_BACK);
     e_cls();
-    //e_drawLogo();
-    //e_drawTable();
-    //Graphics_drawImage(&ctx, &m_number_bmp, 8, 8);
-    Graphics_drawImage(&ctx, &m_icon_bmp, 0, 0);
+    e_drawLogo();
+    e_drawTable();
+    Graphics_drawImage(&ctx, &m_number_bmp, 8, 8);
     while (1) {
 
     }
