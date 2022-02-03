@@ -4,8 +4,10 @@
 void Tetris ();
 void Stack ();
 void Snake ();
+void Wordle ();
+void e_2048 ();
 
-#define NUMGAMES 5
+#define NUMGAMES 6
 struct games {
     int8_t* name;             //video game name
     int8_t* desc;            //short description
@@ -15,8 +17,9 @@ struct games {
      {"Tetris",         "The soviet   mind game                 ", &Tetris},
      {"Stack",          "Stack blocks higher by    timing inputs", &Stack},
      {"Snake",          "The classic  nokia game   with reptiles", &Snake},
-     {"Minesweeper",    "find mines   with your    logic        ", NULL},
-     {"TESTENTRY",      "123456789012345678901234567890123456789",NULL}
+     {"Minesweeper",    "Find mines   with your    logic        ", NULL},
+     {"2048",           "Reach 2048                             ", &e_2048},
+     {"Wordle",         "Guess the    word                      ", &Wordle}
 };
 
 #endif
