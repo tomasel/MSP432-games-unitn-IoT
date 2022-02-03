@@ -1,8 +1,8 @@
 #include <ti/grlib/grlib.h>
 #include <stdint.h>
 
-static const uint8_t m_num_pixels[][6] {
-    {0,0,0,0,0,0} //0
+static const uint8_t m_num_pixels[][6] = {
+    {0,0,0,0,0,0}, //0
     {0b00010000,
      0b00110000,
      0b01010000,
@@ -52,7 +52,7 @@ static const uint8_t m_num_pixels[][6] {
      0b01111000} //8
 };
 
-static const uint8_t m_num_pixels[][7] {
+static const uint8_t m_gfx_pixels[][14] = {
     {0b00000000,0b00000000,
      0b00010101,0b01011000,
      0b00010101,0b01011000,
@@ -93,5 +93,5 @@ const Graphics_Image  m_icon_bmp = {
     7,
     2,
     m_4_pallette,
-    m_num_pixels[1],
+    m_gfx_pixels[1],
 };
