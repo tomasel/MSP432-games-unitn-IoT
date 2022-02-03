@@ -1,14 +1,8 @@
 #include "libraries/init.h"
+#include "assets/e_2048.h"
 
-// grid height and width
-#define E_W 4
-#define E_H 4
-
-// colors (every number >2048 is black, because fuck that)
-// TODO: do we want colors?
-#define E_BACK 0x44475A
-#define E_TEXT 0xFFFFFF
-#define E_0    0x000000
+// colors
+#define E_BACK 0xBBADA0
 #define E_4    0x4495D4
 #define E_8    0x2F6895
 #define E_16   0xF5BD70
@@ -20,13 +14,46 @@
 #define E_1024 0x5454DA
 #define E_2048 0xDA54D8
 
-typedef struct e_point {
-    int x, y;
-} e_point;
+// table
+#define E_Tbl_origin 32
+#define E_Tbl_end    SCREEN_MAX_X-1
+#define E_Tbl_hgt    96
+#define E_Tbl_row    E_Tbl_hgt/4
+Graphics_Rectangle table = {E_Tbl_origin,E_Tbl_origin,E_Tbl_end,E_Tbl_end};
 
-static void e_newnumber();  // generates a new element
-static void e_move(int direction);   // also does all the sums
+// functions
+void e_cls (void);
+void e_drawLogo (void);
+void e_drawTable (void);
+void e_drawScore (void);
 
+// main
 void e_2048 () {
-   
+    Graphics_setBackgroundColor(&ctx,E_BACK);
+    e_cls();
+    e_drawLogo();
+    e_drawTable();
+    Graphics_drawImage(&ctx, &m_number_bmp, 8, 8);
+    while (1) {
+
+    }
+}
+
+// ===
+void e_cls(void) {
+    Graphics_clearDisplay(&ctx);
+}
+
+void e_drawLogo(void) {
+    Graphics_drawImage(&ctx, &logo_2048, 0, 0);
+}
+
+void e_drawTable(void) {
+    Graphics_drawRectangle(&ctx,&table);
+    Graphics_drawLineH(&ctx,E_Tbl_origin,E_Tbl_end,E_Tbl_end - 3 * E_Tbl_row);
+    Graphics_drawLineH(&ctx,E_Tbl_origin,E_Tbl_end,E_Tbl_end - 2 * E_Tbl_row);
+    Graphics_drawLineH(&ctx,E_Tbl_origin,E_Tbl_end,E_Tbl_end - E_Tbl_row);
+    Graphics_drawLineV(&ctx,E_Tbl_end - E_Tbl_row,E_Tbl_origin,E_Tbl_end);
+    Graphics_drawLineV(&ctx,E_Tbl_end - 2 * E_Tbl_row,E_Tbl_origin,E_Tbl_end);
+    Graphics_drawLineV(&ctx,E_Tbl_end - 3 * E_Tbl_row,E_Tbl_origin,E_Tbl_end);
 }
