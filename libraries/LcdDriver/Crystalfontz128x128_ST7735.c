@@ -306,6 +306,7 @@ static void Crystalfontz128x128_PixelDrawMultiple(const Graphics_Display *pDispl
             // Loop while there are more pixels to draw
             while(lCount > 0)
             {
+		Data = *pucData++;
                 // Loop through the pixels in this byte of image data
                 for(; (lX0 < 4) && lCount; lX0++, lCount--)
                 {
