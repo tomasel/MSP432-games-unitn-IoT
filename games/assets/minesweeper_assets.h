@@ -80,7 +80,7 @@ const uint8_t m_gfx_pixels[][14] = {
 
 const uint32_t n_num_colors[] = {0x000000, 0x3366ff, 0x008000, 0xff0000, 0x333399, 0x800000, 0x008080, 0x000000, 0xff00ff};
 
-uint32_t                m_num_pallette [] = {0xc0c0c0, 0x3366ff};
+uint32_t                m_num_palette [] = {0xc0c0c0, 0x3366ff};
 static const uint32_t   m_4_pallette   [] = {0xc0c0c0, 0xffffff, 0x808080, 0xff00000}; 
 
 Graphics_Image  m_number_bmp = {
@@ -88,7 +88,7 @@ Graphics_Image  m_number_bmp = {
     7,
     6,
     2,
-    m_num_pallette,
+    m_num_palette,
     m_num_pixels[1],
 };
 
