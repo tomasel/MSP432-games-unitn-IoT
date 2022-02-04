@@ -59,6 +59,7 @@ void Minesweeper (){
         m_nflags=M_NBOMB; //reset number of flags
         m_ncleared=0;     //reset number of cleared cells
         m_drawBoard();    //redraw empty board
+        m_drawCursor();   //draw cursor
 
         while (m_state<=1){ //while in playable state
                uint16_t i = getButtons();
@@ -118,7 +119,7 @@ void m_drawBoard(){
     for (i=0; i<M_YM; i++) //draw horizontal grid lines
         Graphics_drawLineH(&ctx, 0, 127, i*M_WIDTH+M_YSTART-1);
     for (i=1; i<=M_YM; i++)//draw vertical lines
-        Graphics_drawLineV(&ctx, i*M_WIDTH, M_YSTART+1, 127);
+        Graphics_drawLineV(&ctx, i*M_WIDTH-1, M_YSTART, 127);
 
     m_icon_bmp.pPixel = m_gfx_pixels[0]; //select blank cell
     for (i=0; i<M_YM; i++)
@@ -137,8 +138,8 @@ void m_drawBoard(){
 }
 
 void m_drawCursor(){    //draws a black + over currently selected cell
-    uint8_t x = m_px*M_WIDTH;
-    uint8_t y = m_py*M_WIDTH+M_YSTART;
+    uint8_t x = m_px*M_WIDTH-1;
+    uint8_t y = m_py*M_WIDTH+M_YSTART-1;
     Graphics_drawLineH(&ctx, x, x+M_WIDTH, y+M_WIDTH/2);
     Graphics_drawLineV(&ctx, x+M_WIDTH/2, y, y+M_WIDTH);
 }
@@ -161,7 +162,7 @@ void m_drawCell (uint8_t x, uint8_t y){
     if (cell&M_UNCOVE){
         m_number_bmp.pPixel = m_num_pixels[cell&M_NUMBER]; //select texture
         m_num_palette[1] = n_num_colors[cell&M_NUMBER];   //select palette
-        Graphics_drawImage(&ctx, &m_icon_bmp, x*M_WIDTH, y*M_WIDTH+M_YSTART+1); //draw number
+        Graphics_drawImage(&ctx, &m_number_bmp, x*M_WIDTH, y*M_WIDTH+M_YSTART+1); //draw number
         return;
     }
 
@@ -203,7 +204,7 @@ void m_flag (){
 	m_drawCursor();
 	int8_t str[3];
 	s_sprintf(str, "%d", m_nflags);
-	Graphics_drawString(&ctx, str, 2, 13, 3, false);
+	Graphics_drawString(&ctx, str, 2, 13, 3, true);
 }
 
 void m_clear(uint8_t x, uint8_t y){
