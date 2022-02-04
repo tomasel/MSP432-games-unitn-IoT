@@ -81,6 +81,7 @@ void Minesweeper (){
                }
                wait(100);
            }
+        wait(2000);
 
     }
 
@@ -147,8 +148,8 @@ void m_drawCell (uint8_t x, uint8_t y){
 
     m_icon_bmp.pPixel = m_gfx_pixels[0]; //select blank
 
-    if (cell&M_ISBOMB && m_state==3) // i might never need this, should remove later
-        m_icon_bmp.pPixel = m_gfx_pixels[2]; //select bomb texture if failed
+    /*if (cell&M_ISBOMB && m_state==3) // i might never need this, should remove later
+        m_icon_bmp.pPixel = m_gfx_pixels[2]; //select bomb texture if failed*/
     if (cell&M_FLAGGD)
         m_icon_bmp.pPixel = m_gfx_pixels[1]; //draw flag for flag counter
     if (m_state == 1 ){
@@ -211,7 +212,12 @@ void m_clear(uint8_t x, uint8_t y){
 	}
 	if (m_board[y][x]&M_ISBOMB){
 		m_state=3; //gameover
-		//draw();
+		m_icon_bmp.pPixel = m_gfx_pixels[2]; //select BOMB graphics
+		uint8_t i, j;
+        for (i=0; i<M_YM; i++)              //display all bombs
+            for (j=0; j<M_XM; j++)
+                if (m_board[i][j]&M_ISBOMB)
+                    Graphics_drawImage(&ctx, &m_icon_bmp, j*M_WIDTH, i*M_WIDTH+M_YSTART);
 		return;		
 	}
 	uint8_t t=0, i;
