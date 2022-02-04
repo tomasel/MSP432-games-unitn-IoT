@@ -42,7 +42,7 @@ void m_drawCell (uint8_t x, uint8_t y);
 void m_drawCursor();
 void m_reset();
 
-void minesweeper (){
+void Minesweeper (){
     m_drawBoard();
 }
 

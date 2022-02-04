@@ -4,6 +4,7 @@
 void Tetris ();
 void Stack ();
 void Snake ();
+void Minesweeper();
 void Wordle ();
 void e_2048 ();
 
@@ -17,7 +18,7 @@ struct games {
      {"Tetris",         "The soviet   mind game                 ", &Tetris},
      {"Stack",          "Stack blocks higher by    timing inputs", &Stack},
      {"Snake",          "The classic  nokia game   with reptiles", &Snake},
-     {"Minesweeper",    "Find mines   with your    logic        ", NULL},
+     {"Minesweeper",    "Find mines   with your    logic        ", &Minesweeper},
      {"2048",           "Reach 2048                             ", &e_2048},
      {"Wordle",         "Guess the    word                      ", &Wordle}
 };
