@@ -33,7 +33,6 @@ void e_2048 () {
     e_cls();
     e_drawLogo();
     e_drawTable();
-    Graphics_drawImage(&ctx, &m_number_bmp, 8, 8);
     while (1) {
 
     }
