@@ -8,7 +8,7 @@
 
 #define M_BACKG 0xffffff
 #define M_GRIDC 0x000000
-
+#define M_SELECT_COLOR 0xff0000
 #define M_NBOMB 40
 #define M_NBOMBSTR "40"
 
@@ -30,7 +30,6 @@ uint8_t m_board[M_YM][M_XM], m_state;
  * 1: game has been reset but board is not cleared
  * 2: game lost
  * 3: game won
- *
  */
 
 uint8_t m_px=M_XM/2-1, m_py=M_YM/2-1;
@@ -47,7 +46,6 @@ void m_flag  ();
 void m_clear (uint8_t x, uint8_t y);
 void m_drawBoard();
 void m_drawCell (uint8_t x, uint8_t y);
-void m_drawCursor();
 void m_reset();
 
 void m_playerMove(uint8_t dir);
@@ -59,7 +57,7 @@ void Minesweeper (){
         m_nflags=M_NBOMB; //reset number of flags
         m_ncleared=0;     //reset number of cleared cells
         m_drawBoard();    //redraw empty board
-        m_drawCursor();   //draw cursor
+        m_playerMove(255);//draw cursor
 
         while (m_state<=1){ //while in playable state
                uint16_t i = getButtons();
@@ -89,14 +87,19 @@ void Minesweeper (){
 }
 
 void m_playerMove(uint8_t dir){
-    m_drawCell(m_px, m_py);
+    Graphics_Rectangle rect;
+    rect.xMin=m_px*M_WIDTH-1;
+    rect.xMax=rect.xMin+M_WIDTH;
+    rect.yMin=m_py*M_WIDTH+M_YSTART;
+    rect.yMax=rect.xMin+M_WIDTH;
+    Graphics_drawRectangle(&ctx, &rect);
     switch (dir){
     case 0:
         if(++m_px>=M_XM)
             m_px=0;
         break;
     case 1:
-        if(--m_px==255)
+        if(m_px--==0)
             m_px=M_XM-1;
         break;
     case 2:
@@ -104,11 +107,17 @@ void m_playerMove(uint8_t dir){
             m_py=0;
         break;
     case 3:
-        if(--m_py==255)
+        if(m_py--==0)
             m_py=M_YM-1;
         break;
     }
-    m_drawCursor();
+    rect.xMin=m_px*M_WIDTH-1;
+    rect.xMax=rect.xMin+M_WIDTH;
+    rect.yMin=m_py*M_WIDTH+M_YSTART;
+    rect.yMax=rect.xMin+M_WIDTH;
+    Graphics_setForegroundColor (&ctx, M_SELECT_COLOR);
+    Graphics_drawRectangle(&ctx, &rect);
+    Graphics_setForegroundColor (&ctx, M_GRIDC);
 }
 void m_drawBoard(){
     Graphics_setBackgroundColor(&ctx, M_BACKG);
@@ -117,22 +126,22 @@ void m_drawBoard(){
 
     uint8_t i,j;
     for (i=0; i<M_YM; i++) //draw horizontal grid lines
-        Graphics_drawLineH(&ctx, 0, 127, i*M_WIDTH+M_YSTART-1);
-    for (i=1; i<=M_YM; i++)//draw vertical lines
+        Graphics_drawLineH(&ctx, 0, 127, i*M_WIDTH+M_YSTART);
+    for (i=1; i<=M_XM; i++)//draw vertical lines
         Graphics_drawLineV(&ctx, i*M_WIDTH-1, M_YSTART, 127);
 
     m_icon_bmp.pPixel = m_gfx_pixels[0]; //select blank cell
     for (i=0; i<M_YM; i++)
 		for (j=0; j<M_XM; j++)
-            Graphics_drawImage(&ctx, &m_icon_bmp, j*M_WIDTH, i*M_WIDTH+M_YSTART);
+            Graphics_drawImage(&ctx, &m_icon_bmp, j*M_WIDTH, i*M_WIDTH+M_YSTART+1);
 
     m_icon_bmp.pPixel = m_gfx_pixels[1]; 
-    Graphics_drawImage(&ctx, &m_icon_bmp, 3,3); //draw flag for flag counter
-    Graphics_drawString(&ctx, M_NBOMBSTR, 2, 13, 3, false);
+    Graphics_drawImage(&ctx, &m_icon_bmp, 3,5); //draw flag for flag counter
+    Graphics_drawString(&ctx, M_NBOMBSTR, 2, 13, 5, false);
 
     m_icon_bmp.pPixel = m_gfx_pixels[2]; 
     Graphics_drawImage(&ctx, &m_icon_bmp, 32,3); //draw bomb
-    Graphics_drawString(&ctx, M_NBOMBSTR, 2, 13+29, 3, false);
+    Graphics_drawString(&ctx, M_NBOMBSTR, 2, 13+29, 5, false);
 
 
 }
@@ -162,13 +171,13 @@ void m_drawCell (uint8_t x, uint8_t y){
     if (cell&M_UNCOVE){
         m_number_bmp.pPixel = m_num_pixels[cell&M_NUMBER]; //select texture
         m_num_palette[1] = n_num_colors[cell&M_NUMBER];   //select palette
-        Graphics_drawImage(&ctx, &m_number_bmp, x*M_WIDTH, y*M_WIDTH+M_YSTART+1); //draw number
+        Graphics_drawImage(&ctx, &m_number_bmp, x*M_WIDTH, y*M_WIDTH+M_YSTART+2); //draw number
         return;
     }
 
     
     end:
-    Graphics_drawImage(&ctx, &m_icon_bmp, x*M_WIDTH, y*M_WIDTH+M_YSTART); //draw uncovered cell
+    Graphics_drawImage(&ctx, &m_icon_bmp, x*M_WIDTH, y*M_WIDTH+M_YSTART+1); //draw uncovered cell
 }
 
 
@@ -204,7 +213,7 @@ void m_flag (){
 	m_drawCursor();
 	int8_t str[3];
 	s_sprintf(str, "%d", m_nflags);
-	Graphics_drawString(&ctx, str, 2, 13, 3, true);
+	Graphics_drawString(&ctx, str, 2, 13, 5, true);
 }
 
 void m_clear(uint8_t x, uint8_t y){
