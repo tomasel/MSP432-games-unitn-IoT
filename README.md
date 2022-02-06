@@ -12,7 +12,7 @@ Small series of retro games for the MSP432 with launchpad mkII
 |--|-----------------------|------------|-----|
 |t_|Tetris                 |almost done | Guss
 |n_|Snake                  |almost done | Guss
-|m_|Minesweeper            |WIP         | Guss
+|m_|Minesweeper            |almost done | Guss
 |e_|2048                   |WIP         | Elia
 |s_|Stack                  |TBD         | Elia
 |f_|Frogger                |TBD         | Elia
