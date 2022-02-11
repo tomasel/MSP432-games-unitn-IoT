@@ -8,6 +8,22 @@
 #include <ti/grlib/grlib.h>
 #include <stdint.h>
 
+// colors
+#define E_BACK  0xBBADA0
+#define E_2     0x90C9F6
+#define E_4     0x4495D4
+#define E_8     0x2F6895
+#define E_16    0xF5BD70
+#define E_32    0xF2A032
+#define E_64    0xCD8829
+#define E_128   0xE37051
+#define E_256   0xDE5833
+#define E_512   0xBD4A2B
+#define E_1024  0x5454DA
+#define E_2048  0xDA54D8
+
+// LOGO 2048
+
 static const uint8_t logo_st[] = {
   0b00000000,0b00000000,0b00000000,0b00000011,
   0b00000000,0b00000000,0b00000000,0b00000001,
@@ -43,7 +59,7 @@ static const uint8_t logo_st[] = {
   0b11000000,0b00000000,0b00000000,0b00000011
 };
 
-static const uint32_t palette_2048[] = {0xecc400,0xffffff};
+static const uint32_t palette_2048[] = {0xecc400,ClrWhite};
 
 Graphics_Image logo_2048 = {
     GRAPHICS_IMAGE_FMT_1BPP_UNCOMP,
@@ -52,4 +68,44 @@ Graphics_Image logo_2048 = {
     2,
     palette_2048,
     logo_st
+};
+
+// NUMBERS
+// 2
+
+static const uint8_t e_2[] = {
+    0b00000000,0b00000000,0b00000000,
+    0b00000000,0b00000000,0b00000000,
+    0b00000000,0b00000000,0b00000000,
+    0b00000000,0b00000000,0b00000000,
+    0b00000000,0b00000000,0b00000000,
+    0b00000000,0b00000000,0b00000000,
+    0b00000000,0b00000000,0b00000000,
+    0b00000000,0b00000000,0b00000000,
+    0b00000000,0b01110000,0b00000000,
+    0b00000000,0b00001000,0b00000000,
+    0b00000000,0b00001000,0b00000000,
+    0b00000000,0b00010000,0b00000000,
+    0b00000000,0b00100000,0b00000000,
+    0b00000000,0b01111000,0b00000000,
+    0b00000000,0b00000000,0b00000000,
+    0b00000000,0b00000000,0b00000000,
+    0b00000000,0b00000000,0b00000000,
+    0b00000000,0b00000000,0b00000000,
+    0b00000000,0b00000000,0b00000000,
+    0b00000000,0b00000000,0b00000000,
+    0b00000000,0b00000000,0b00000000,
+    0b00000000,0b00000000,0b00000000,
+    0b00000000,0b00000000,0b00000000
+};
+
+static const uint32_t palette_2[] = {E_2,ClrWhite};
+
+Graphics_Image e_2_img = {
+    GRAPHICS_IMAGE_FMT_1BPP_UNCOMP,
+    23,
+    23,
+    2,
+    palette_2,
+    e_2
 };
