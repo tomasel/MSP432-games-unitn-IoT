@@ -17,11 +17,23 @@ void _graphicsInit(){
     Graphics_clearDisplay(&ctx);
 }
 
+/*
+The following functions for drawing triangles were never used in the final, but they do work
+so i decided to keep them in, also here's a steam train:
 
-
-void Graphics_drawArc(const Graphics_Context *context, uint8_t x, uint8_t y, uint8_t radius, uint8_t start, uint8_t end){
-
- }
+                  @~~~@~@~~@~~~@~
+     ~~@~@~~~@@@@~~@~@~@@@~@~@
+   ~@@~~@@@~@~@~@@~@~        
+   @~-@@~@~          _______
+   \   /             | /-\ |
+    | |              |\\_/ |
+  /-| |-----/^\------|--|--|    |----------/+|
+ |================== |     |    |            |
+ |                   | 232 |    |  MSPGames  |
+  \---==/--\__/--\___|_____|_D-C|____________|
+ /|--- |====XX====|  /-\ /-\      /-\   /-\ 
+/_;     \__/  \__/   \-/ \-/      \-/   \-/
+*/
 
 void Graphics_drawTriangle(const Graphics_Context *context, uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2){
     Graphics_drawLine(context, x0, y0, x1, y1);
@@ -29,8 +41,8 @@ void Graphics_drawTriangle(const Graphics_Context *context, uint8_t x0, uint8_t 
     Graphics_drawLine(context, x0, y0, x2, y2);
 }
 
-void Graphics_fillTriangle(const Graphics_Context *context, uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2){
 
+void Graphics_fillTriangle(const Graphics_Context *context, uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2){ 
     uint8_t temp;
 
     if(y1 < y0){        //sort by y

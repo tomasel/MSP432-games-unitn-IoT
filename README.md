@@ -1,11 +1,13 @@
 # MSP432-games-unitn-IoT
-Small series of retro games for the MSP432 with launchpad mkII
+Small series of simple games for the MSP432 launchpad with BoosterPack mkII
 
-## Priorities
-   1. Games
-   2. Sound
-   3. GUI
-   4. font
+## To do
+   - More games
+   - Music
+   - Selection GUI
+   - Highscores
+   - Sleep and schedule functions
+   - Timer for minesweeper
 
 ## (to be (maybe)) Implemented games
 | Prefix | Game            |   Status   |Coder|

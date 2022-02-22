@@ -15,11 +15,11 @@ struct games {
     void (*start)(void);    //function pointer to the start function
 
 } games[] = {//14 char per line       |            |            | avoid having words split by this bar
+     {"2048",           "Reach 2048                             ", &e_2048},
      {"Tetris",         "The soviet   mind game                 ", &Tetris},
      {"Stack",          "Stack blocks higher by    timing inputs", &Stack},
      {"Snake",          "The classic  nokia game   with reptiles", &Snake},
      {"Minesweeper",    "Find mines   with your    logic        ", &Minesweeper},
-     {"2048",           "Reach 2048                             ", &e_2048},
      {"Wordle",         "Guess the    word                      ", &Wordle}
 };
 

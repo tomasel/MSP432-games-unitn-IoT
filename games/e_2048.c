@@ -46,27 +46,28 @@ short e_occu = 0;     // currently occupied square
 // main
 void e_2048 () {
     srand(millis());
-    e_cls();
-    e_drawLogo();
-    e_drawTable();
+
     while (1) {
-        // genera nuovo 2
+        memset(e_grid,0,16); //clear table
+        e_cls();
+        e_drawLogo();
+        e_drawTable();
+
         e_random2();
-        // aspettare input
-        uint16_t butts = getButtons();
+        e_random2();
+        e_random2();e_random2();
+        e_random2();e_random2();e_random2();
 
-        if (butts & JOYSTICK_LEFT) {
-            e_move(2);
-        }
+        do {
+            uint16_t butts = getButtons();
+            if (butts & JOYSTICK_LEFT) {
+                e_move(2);
+            }
 
-        // aggiornare stato
-        if (e_occu == 16) {
-            e_endgame();
-        } else {
-            // ...
-        }
+        } while (1);
     }
 }
+
 
 // ===
 void e_cls(void) {
@@ -78,6 +79,9 @@ void e_drawLogo(void) {
 }
 
 void e_drawTable(void) {
+    Graphics_setForegroundColor(&ctx,E_BACK);
+    Graphics_fillRectangle(&ctx,&e_table);
+    Graphics_setForegroundColor(&ctx,0);
     Graphics_drawRectangle(&ctx,&e_table);
     Graphics_drawLineH(&ctx,E_screenOff,E_screenEnd,E_screenOff + E_screenRow);
     Graphics_drawLineH(&ctx,E_screenOff,E_screenEnd,E_screenOff + 2 * E_screenRow);
@@ -88,24 +92,13 @@ void e_drawTable(void) {
 }
 
 void e_random2 (void) {
-    int x, y;
-    if (e_occu < 16) {
-        while (1) {
-            x = rand() % 4;
-            y = rand() % 4;
-            if (e_grid[x][y] == 0) {
-                /*Graphics_drawImage(&ctx,
-                                   &e_2_img,
-                                   x * E_screenCln + E_screenOff + 1,
-                                   y * E_screenRow + E_screenOff + 1);
-                */
-                e_drawNum(x,y);
-                e_grid[x][y] = 1;
-                ++e_occu;
-                return;
-            }
-        }
-    }
+    uint8_t x, y;
+    do {
+        x = rand() % 4;
+        y = rand() % 4;
+    }while (e_grid[y][x] != 0);
+    e_grid[y][x] = 1;
+    e_drawNum(x,y);
 }
 
 void e_endgame (void) {
@@ -124,10 +117,11 @@ bool e_valid (uint8_t dir) {
  * 3 <
  */
 void e_move (uint8_t dir) {
-    uint8_t i = 0, j = 0;
-    if (dir > 1) {  // check horizontal
+    uint8_t i, j;
+    int8_t k;
+    /*if (dir > 1) {  // check horizontal
         for (i = 0; i < 4; ++i) {
-            for (j = 0; i < 3; ++j) {
+            for (j = 0; j < 3; ++j) {
                 if (e_grid[i][j] == e_grid[i][j + 1]) {
                     e_grid[i][j]++;
                     e_grid[i][j + 1] = 0;
@@ -139,6 +133,23 @@ void e_move (uint8_t dir) {
     } else {    // check vertical
 
     }
+*/
+    for (i = 0; i < 4; i++) {
+        for (j = 1; j < 4; j++) {
+            k=1;
+            uint8_t tmp = e_grid[i][j];
+            while (e_grid[i][j - k] == 0 && j - k >= 0){
+                k++;
+            }
+            k--;
+            e_grid[i][j - k] = tmp;
+            e_drawNum(j-k, i);
+            e_grid[i][j] = 0;
+            e_drawNum(j, i);
+
+        }
+    }
+
 }
 
 void e_drawNum (uint8_t x, uint8_t y) {

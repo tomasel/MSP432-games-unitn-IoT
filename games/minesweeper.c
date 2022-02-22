@@ -91,7 +91,7 @@ void m_playerMove(uint8_t dir){
     rect.xMin=m_px*M_WIDTH-1;
     rect.xMax=rect.xMin+M_WIDTH;
     rect.yMin=m_py*M_WIDTH+M_YSTART;
-    rect.yMax=rect.xMin+M_WIDTH;
+    rect.yMax=rect.yMin+M_WIDTH;
     Graphics_drawRectangle(&ctx, &rect);
     switch (dir){
     case 0:
@@ -114,7 +114,7 @@ void m_playerMove(uint8_t dir){
     rect.xMin=m_px*M_WIDTH-1;
     rect.xMax=rect.xMin+M_WIDTH;
     rect.yMin=m_py*M_WIDTH+M_YSTART;
-    rect.yMax=rect.xMin+M_WIDTH;
+    rect.yMax=rect.yMin+M_WIDTH;
     Graphics_setForegroundColor (&ctx, M_SELECT_COLOR);
     Graphics_drawRectangle(&ctx, &rect);
     Graphics_setForegroundColor (&ctx, M_GRIDC);
@@ -140,17 +140,10 @@ void m_drawBoard(){
     Graphics_drawString(&ctx, M_NBOMBSTR, 2, 13, 5, false);
 
     m_icon_bmp.pPixel = m_gfx_pixels[2]; 
-    Graphics_drawImage(&ctx, &m_icon_bmp, 32,3); //draw bomb
+    Graphics_drawImage(&ctx, &m_icon_bmp, 32,5); //draw bomb
     Graphics_drawString(&ctx, M_NBOMBSTR, 2, 13+29, 5, false);
 
 
-}
-
-void m_drawCursor(){    //draws a black + over currently selected cell
-    uint8_t x = m_px*M_WIDTH-1;
-    uint8_t y = m_py*M_WIDTH+M_YSTART-1;
-    Graphics_drawLineH(&ctx, x, x+M_WIDTH, y+M_WIDTH/2);
-    Graphics_drawLineV(&ctx, x+M_WIDTH/2, y, y+M_WIDTH);
 }
 
 void m_drawCell (uint8_t x, uint8_t y){
@@ -210,7 +203,7 @@ void m_flag (){
 	}
 	*t^=M_FLAGGD;				//flag cell
 	m_drawCell(m_px, m_py);     //draw
-	m_drawCursor();
+
 	int8_t str[3];
 	s_sprintf(str, "%d", m_nflags);
 	Graphics_drawString(&ctx, str, 2, 13, 5, true);
