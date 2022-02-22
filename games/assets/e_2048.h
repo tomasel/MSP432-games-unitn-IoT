@@ -9,7 +9,7 @@
 #include <stdint.h>
 
 // colors
-#define E_BACK  0xBBADA0
+#define E_BACK  0xEBEBEB
 #define E_2     0x90C9F6
 #define E_4     0x4495D4
 #define E_8     0x2F6895
