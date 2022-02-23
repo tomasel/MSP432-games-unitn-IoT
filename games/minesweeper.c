@@ -1,6 +1,6 @@
 #include "libraries/init.h"
 #include "assets/minesweeper_assets.h"
-#include <string.h>
+#include <math.h>
 #define M_XM 16
 #define M_YM 14
 #define M_YSTART 16 
@@ -51,6 +51,7 @@ void m_reset();
 void m_playerMove(uint8_t dir);
 
 void Minesweeper (){
+    static bool held=0;
     for (;;){
         m_state=1;       //set gamestate
         srand(millis());  //shuffle RNG
@@ -70,17 +71,27 @@ void Minesweeper (){
                if(i&JOYSTICK_RIGHT)
                   m_playerMove(0);
 
-               if(i&(BUTTON_A|BUTTON_J))
-                   m_flag();
+               uint32_t magn = sqrt(joystick_y*joystick_y+(joystick_x*joystick_x));
 
-               if(i&(BUTTON_B|BUTTON_J)){
+               if (i&(JOYSTICK_RIGHT|JOYSTICK_LEFT|JOYSTICK_UP|JOYSTICK_DOWN))
+                   wait(150);
+
+               if(i&(BUTTON_A|BUTTON_J)){
+                   if (!held){
+                       m_flag();
+                       held=1;
+                   }
+               } else held=0;
+
+
+               if( i&BUTTON_B ){
                    if (m_state==1)
                        m_reset();
                    m_clear(m_px,m_py);
                }
-               wait(100);
+
            }
-        wait(2000);
+        wait(5000);
 
     }
 
@@ -95,20 +106,20 @@ void m_playerMove(uint8_t dir){
     Graphics_drawRectangle(&ctx, &rect);
     switch (dir){
     case 0:
-        if(++m_px>=M_XM)
-            m_px=0;
+        if (m_px<M_XM-1)
+            m_px++;
         break;
     case 1:
-        if(m_px--==0)
-            m_px=M_XM-1;
+        if(m_px>0)
+            m_px--;
         break;
     case 2:
-        if(++m_py>=M_YM)
-            m_py=0;
+        if(m_py<M_YM-1)
+            m_py++;
         break;
     case 3:
-        if(m_py--==0)
-            m_py=M_YM-1;
+        if(m_py>0)
+            m_py--;
         break;
     }
     rect.xMin=m_px*M_WIDTH-1;
@@ -151,8 +162,6 @@ void m_drawCell (uint8_t x, uint8_t y){
 
     m_icon_bmp.pPixel = m_gfx_pixels[0]; //select blank
 
-    /*if (cell&M_ISBOMB && m_state==3) // i might never need this, should remove later
-        m_icon_bmp.pPixel = m_gfx_pixels[2]; //select bomb texture if failed*/
     if (cell&M_FLAGGD)
         m_icon_bmp.pPixel = m_gfx_pixels[1]; //draw flag for flag counter
     if (m_state == 1 ){
@@ -220,7 +229,7 @@ void m_clear(uint8_t x, uint8_t y){
         for (i=0; i<M_YM; i++)              //display all bombs
             for (j=0; j<M_XM; j++)
                 if (m_board[i][j]&M_ISBOMB)
-                    Graphics_drawImage(&ctx, &m_icon_bmp, j*M_WIDTH, i*M_WIDTH+M_YSTART);
+                    Graphics_drawImage(&ctx, &m_icon_bmp, j*M_WIDTH, i*M_WIDTH+M_YSTART+1);
 		return;		
 	}
 	uint8_t t=0, i;
