@@ -29,8 +29,8 @@ uint8_t m_board[M_YM][M_XM], m_state;
 /*state:
  * 0: regular gameplay
  * 1: game has been reset but board is not cleared
- * 2: game lost
- * 3: game won
+ * 2: game won
+ * 3: game lost
  */
 
 uint8_t m_px=M_XM/2-1, m_py=M_YM/2-1;
@@ -95,8 +95,20 @@ void Minesweeper (){
                }
 
            }
-        wait(5000);
 
+        if (m_state == 3){
+            Graphics_setForegroundColor (&ctx, 0xffffff);
+            Graphics_setBackgroundColor (&ctx, 0xff0000);
+            Graphics_drawString(&ctx, "You LOSE!", 0xff, 60, 5, true);
+        }
+        if (m_state == 2){
+            Graphics_setForegroundColor (&ctx, 0xffffff);
+            Graphics_setBackgroundColor (&ctx, 0x00ff00);
+            Graphics_drawString(&ctx, "YOU WON!", 0x44, 60, 5, true);
+        }
+
+        wait (2000);
+        while (!(getButtons()&(BUTTON_B|BUTTON_J|BUTTON_A)));
     }
 
 }
@@ -203,7 +215,7 @@ void m_reset(){
 
 void m_flag (){
 	uint8_t *t=&m_board[m_py][m_px];
-	if (*t&M_UNCOVE) //can't flag uncovered tiles
+	if (*t&M_UNCOVE||(m_state!=0)) //can't flag uncovered tiles or if game is not started
 		return;
 		
 	if (*t&M_FLAGGD) 

@@ -81,14 +81,24 @@ void e_2048 () {
                 e_rotateBoard();
             }
             if (draw){
+                e_random2();
                 e_redrawTable();
-                if (e_endgame())
+                if (e_endgame()){
+                    Graphics_setForegroundColor (&ctx, 0xffffff);
+                    Graphics_setBackgroundColor (&ctx, 0xff0000);
+                    Graphics_drawString(&ctx, "GAME OVER!", 0xff, 45, 20, true);
                     break; //gameover
+                }
+                wait(180);
             }
 
-            wait(100);
+
         } while (1);
-        wait (10000);
+
+
+
+        wait (2000);
+        while (!(getButtons()&(BUTTON_B|BUTTON_J|BUTTON_A)));
     }
 }
 
@@ -96,7 +106,7 @@ void e_2048 () {
 
 void e_drawTable(void) {
 
-
+    Graphics_setBackgroundColor(&ctx,0xffffff);
     Graphics_clearDisplay(&ctx);
     Graphics_drawImage(&ctx, &logo_2048, 0, 0);
 
@@ -132,7 +142,7 @@ bool e_endgame (void) {
         }
         for (j = 0; j < 3; j++) {
             if ( e_grid[i][j] == e_grid[i][j+1]||
-                 e_grid[j][i] == e_grid[j+1][i] );
+                 e_grid[j][i] == e_grid[j+1][i] )
                 return false;       // if a merge is possible
 
         }
@@ -177,7 +187,6 @@ bool e_moveLEFT () {
         }
 
     if (success){
-        e_random2();
         int8_t str[20];
         s_sprintf(&str, "Score:%9d", e_score);
         Graphics_setForegroundColor(&ctx, 0);
