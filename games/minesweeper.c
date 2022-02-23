@@ -24,6 +24,7 @@ bit  6: 		uncovered
 #define M_FLAGGD 0b01000000
 #define M_UNCOVE 0b10000000
 
+#define M_JOYSENS 2000
 uint8_t m_board[M_YM][M_XM], m_state;
 /*state:
  * 0: regular gameplay
@@ -62,21 +63,24 @@ void Minesweeper (){
 
         while (m_state<=1){ //while in playable state
                uint16_t i = getButtons();
-               if(i&JOYSTICK_UP)
+
+               int16_t joyy = joystick_y-JOYSTICK_CENTER;
+               int16_t joyx = joystick_x-JOYSTICK_CENTER;
+               if(joyy>M_JOYSENS)
                    m_playerMove(3);
-               if(i&JOYSTICK_DOWN)
+               if(joyy<-M_JOYSENS)
                   m_playerMove(2);
-               if(i&JOYSTICK_LEFT)
+               if(joyx<-M_JOYSENS)
                   m_playerMove(1);
-               if(i&JOYSTICK_RIGHT)
+               if(joyx>M_JOYSENS)
                   m_playerMove(0);
 
-               uint32_t magn = sqrt(joystick_y*joystick_y+(joystick_x*joystick_x));
 
-               if (i&(JOYSTICK_RIGHT|JOYSTICK_LEFT|JOYSTICK_UP|JOYSTICK_DOWN))
-                   wait(150);
+               float magn = sqrt(joyy*joyy+(joyx*joyx));//the more you move the joystick, the faster it goes
+               if (magn > M_JOYSENS)
+                   wait((1-((magn-M_JOYSENS)/(JOYSTICK_CENTER)))*256);
 
-               if(i&(BUTTON_A|BUTTON_J)){
+               if(i&(BUTTON_B|BUTTON_J)){
                    if (!held){
                        m_flag();
                        held=1;
@@ -84,7 +88,7 @@ void Minesweeper (){
                } else held=0;
 
 
-               if( i&BUTTON_B ){
+               if( i&BUTTON_A ){
                    if (m_state==1)
                        m_reset();
                    m_clear(m_px,m_py);
@@ -199,7 +203,7 @@ void m_reset(){
 
 void m_flag (){
 	uint8_t *t=&m_board[m_py][m_px];
-	if (*t&M_UNCOVE||(m_state!=0)) //can't flag uncovered tiles or if game is not started
+	if (*t&M_UNCOVE) //can't flag uncovered tiles
 		return;
 		
 	if (*t&M_FLAGGD) 
